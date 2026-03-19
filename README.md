@@ -1,11 +1,11 @@
 # Vault-Agent
 
 > Kubernetes 密鑰同步控制器 · A Kubernetes Secret Sync Controller
-[![GitHub](https://img.shields.io/badge/github-vincent119%2Fvault-agent-blue?logo=github)](https://github.com/vincent119/vault-agent)
+
+[![GitHub](https://img.shields.io/badge/github-vincent119%2Fvault--agent-blue?logo=github)](https://github.com/vincent119/vault-agent)
 ![Go](https://img.shields.io/badge/Go-1.25-00ADD8?logo=go&logoColor=white)
 ![License](https://img.shields.io/badge/License-MIT-blue)
 ![Architecture](https://img.shields.io/badge/Architecture-DDD%20%2B%20Clean-lightgrey)
-![Release](https://img.shields.io/github/release/vincent119/vault-agent)
 
 
 ---
