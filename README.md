@@ -7,7 +7,6 @@
 ![License](https://img.shields.io/badge/License-MIT-blue)
 ![Architecture](https://img.shields.io/badge/Architecture-DDD%20%2B%20Clean-lightgrey)
 
-
 ---
 
 ## 概覽 | Overview
