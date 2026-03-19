@@ -6,6 +6,7 @@
 ![Go](https://img.shields.io/badge/Go-1.25-00ADD8?logo=go&logoColor=white)
 ![License](https://img.shields.io/badge/License-MIT-blue)
 ![Architecture](https://img.shields.io/badge/Architecture-DDD%20%2B%20Clean-lightgrey)
+![GitHub Release](https://img.shields.io/github/v/tag/vincent119/vault-agent?label=release)
 
 ---
 
