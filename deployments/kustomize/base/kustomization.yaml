@@ -1,0 +1,20 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+generatorOptions:
+  disableNameSuffixHash: true
+namespace: vault-agent
+images:
+  - name: vault-agent
+    newName: vault-agent
+    newTag: "latest"
+resources:
+  - namespace.yaml
+  - certificate-ca.yaml
+  - issuer-ca.yaml
+  - certificate.yaml
+  - service_account.yaml
+  - rbac.yaml
+  - admission.yaml
+  - deployment.yaml
+  - service.yaml
+  - pdb.yaml

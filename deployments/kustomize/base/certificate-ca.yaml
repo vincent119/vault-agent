@@ -1,0 +1,20 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: vault-agent-ca
+  namespace: vault-agent
+spec:
+  isCA: true
+  commonName: vault-agent.local
+  secretName: vault-agent-ca
+  privateKey:
+    algorithm: ECDSA
+    size: 256
+  duration: 8760h
+  renewBefore: 360h
+  issuerRef:
+    kind: ClusterIssuer
+    name: selfsigned-cluster-issuer
+  subject:
+    organizations:
+      - vault-agent

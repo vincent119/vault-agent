@@ -1,0 +1,42 @@
+app:
+  name: vault-agent
+  port: 10000
+  env: dev
+
+log:
+  level: info
+  format: console
+  outputs:
+    - console
+  add_caller: true
+  development: true
+  color_enabled: true
+
+vault:
+  address: http://127.0.0.1:8200
+  token: dev-root-token
+  mount_path: secret
+  auth_k8s_path: ""
+  auth_k8s_role: ""
+
+aws:
+  region: ap-northeast-1
+
+k8s:
+  kubeconfig: "" # 本機開發請填路徑；空則僅用 In-Cluster（不預設讀取 ~/.kube/config）
+  namespace: ""
+
+sync:
+  interval_seconds: 60
+
+telemetry:
+  enabled: true
+  otlp_endpoint: ""           # 空則輸出 stdout；非空則送 OTLP（依 otlp_transport 用 gRPC 或 HTTP）
+  otlp_transport: grpc        # grpc（預設, port 4317）或 http（port 4318）
+  otlp_compression: none      # none 或 gzip
+  otlp_headers: ""            # 認證等 header，格式 "key1=value1,key2=value2"（例：Authorization=Bearer xxx）
+  otlp_basic_auth: ""         # 空則不使用；非空則對 OTLP 收集器送 Basic 認證，格式 "user:password"（gRPC/HTTP 皆支援）
+
+metrics:
+  enabled: true
+  basic_auth: "" # 非空時為 "user:password"，對 /metrics 啟用 Basic Auth

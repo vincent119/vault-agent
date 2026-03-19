@@ -1,0 +1,10 @@
+# vendor 需由 host 先執行 go mod vendor 後一併帶入 context，供 -mod=vendor 建置使用
+# 常見排除，縮小 context、避免影響建置
+.git
+.github
+*.md
+.env*
+.dockerignore
+.docs
+.openspec
+.deplyment

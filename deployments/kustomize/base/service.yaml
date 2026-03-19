@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: vault-agent
+  namespace: vault-agent
+spec:
+  selector:
+    app: vault-agent
+  ports:
+    - name: vault-agent
+      port: 8080
+      targetPort: https

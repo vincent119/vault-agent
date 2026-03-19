@@ -1,0 +1,79 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vault-agent
+  namespace: vault-agent
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vault-agent
+  template:
+    metadata:
+      annotations: {}
+      labels:
+        app: vault-agent
+    spec:
+      volumes:
+        - name: vault-agent-tls
+          secret:
+            secretName: vault-agent-tls
+            items:
+              - key: ca.crt
+                path: ca.crt
+              - key: tls.crt
+                path: tls.crt
+              - key: tls.key
+                path: tls.key
+      serviceAccount: vault-agent
+      serviceAccountName: vault-agent
+      securityContext:
+        runAsUser: 10000
+        runAsGroup: 10000
+        fsGroup: 10000
+      containers:
+        - image: vault-agent
+          imagePullPolicy: Always
+          name: vault-agent
+          volumeMounts:
+            - name: vault-agent-tls
+              readOnly: true
+              mountPath: "/etc/vault-agent/tls"
+          ports:
+            - containerPort: 8080
+              name: https
+          env:
+            - name: GOMEMLIMIT
+              value: "100MiB"
+            - name: APP_ENV
+              value: "prod"
+            - name: APP_PORT
+              value: "8080"
+            - name: TLS_CERT_FILE
+              value: "/etc/vault-agent/tls/tls.crt"
+            - name: TLS_KEY_FILE
+              value: "/etc/vault-agent/tls/tls.key"
+          envFrom:
+            - secretRef:
+                name: vault-agent-secrets
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: https
+              scheme: HTTPS
+            initialDelaySeconds: 10
+            periodSeconds: 15
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: https
+              scheme: HTTPS
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              cpu: 200m
+              memory: 128Mi

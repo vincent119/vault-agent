@@ -1,0 +1,48 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - ../../base
+
+namespace: vault-agent
+
+commonAnnotations:
+  description: "Vault Agent"
+  maintainer: "devops team"
+
+generatorOptions:
+  disableNameSuffixHash: true
+
+images:
+  - name: vault-agent
+    newName: ghcr.io/vincent119/vault-agent
+    newTag: "latest"
+
+replicas:
+  - count: 1
+    name: vault-agent
+
+secretGenerator:
+  - name: vault-agent-secrets
+    literals:
+      - APP_NAME=vault-agent
+      - APP_ENV=uat
+      - APP_PORT=8080
+      - LOG_LEVEL=info
+      - LOG_FORMAT=json
+      - LOG_OUTPUTS=console
+      - LOG_ADD_CALLER=true
+      - LOG_DEVELOPMENT=true
+      - LOG_COLOR_ENABLED=false
+      - VAULT_ADDRESS=https://vault.imdevs.net
+      - VAULT_TOKEN=
+      - VAULT_MOUNT_PATH=im
+      - VAULT_AUTH_K8S_PATH=im-uat-eks
+      - VAULT_AUTH_K8S_ROLE=vault-agent
+      - AWS_REGION=ap-southeast-1
+      - SYNC_INTERVAL_SECONDS=60
+      - TELEMETRY_ENABLED=true
+      - TELEMETRY_OTLP_ENDPOINT=
+      - METRICS_ENABLED=true
+      - METRICS_BASIC_AUTH=
+    type: Opaque

@@ -1,0 +1,24 @@
+apiVersion: admissionregistration.k8s.io/v1
+kind: MutatingWebhookConfiguration
+metadata:
+  name: vault-agent-webhook
+webhooks:
+  - name: vault-agent.vault-agent.svc
+    admissionReviewVersions: ["v1"]
+    sideEffects: None
+    # failurePolicy: Ignore 確保 agent 失效時不會卡死其他 Pod 部署
+    failurePolicy: Ignore
+    clientConfig:
+      service:
+        name: vault-agent
+        namespace: vault-agent
+        path: /mutate
+      caBundle: "" # 由 cert-manager 或手動填入
+    rules:
+      - apiGroups: [""]
+        apiVersions: ["v1"]
+        resources: ["pods"]
+        operations: ["CREATE"]
+    objectSelector:
+      matchLabels:
+        inject-vault-agent: "true"

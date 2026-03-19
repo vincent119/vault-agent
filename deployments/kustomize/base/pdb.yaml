@@ -1,0 +1,10 @@
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: vault-agent
+  namespace: vault-agent
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app: vault-agent

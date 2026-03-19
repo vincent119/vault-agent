@@ -1,0 +1,60 @@
+# issue-ca.yaml 使用 cert-manager 為 Mutating Webhook 自動簽發 TLS 憑證
+# 前置條件：cert-manager 必須已安裝於叢集中
+# 安裝說明：https://cert-manager.io/docs/installation/
+---
+# 自簽名 ClusterIssuer - 用於建立 CA
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: vault-agent-selfsigned-issuer
+spec:
+  selfSigned: {}
+---
+# 使用 ClusterIssuer 簽發 CA Certificate
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: vault-agent-ca
+  namespace: vault-agent
+spec:
+  isCA: true
+  commonName: vault-agent-ca
+  secretName: vault-agent-ca-secret
+  privateKey:
+    algorithm: RSA
+    size: 2048
+  issuerRef:
+    name: vault-agent-selfsigned-issuer
+    kind: ClusterIssuer
+    group: cert-manager.io
+---
+# 以 CA Certificate 建立 Issuer 供 Webhook TLS 使用
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: vault-agent-ca-issuer
+  namespace: vault-agent
+spec:
+  ca:
+    secretName: vault-agent-ca-secret
+---
+# 簽發 Webhook Server 使用的 TLS 憑證
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: vault-agent-webhook-tls
+  namespace: vault-agent
+spec:
+  secretName: vault-agent-tls
+  duration: 8760h   # 1 year
+  renewBefore: 720h # 30 days
+  commonName: vault-agent.vault-agent.svc
+  dnsNames:
+    - vault-agent
+    - vault-agent.vault-agent
+    - vault-agent.vault-agent.svc
+    - vault-agent.vault-agent.svc.cluster.local
+  issuerRef:
+    name: vault-agent-ca-issuer
+    kind: Issuer
+    group: cert-manager.io

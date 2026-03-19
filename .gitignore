@@ -1,0 +1,31 @@
+# Go産物
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+coverage.out
+vendor/
+cmd/vault-agent/vault-agent
+
+# IDE與編輯器設定
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# 環境變數與機密資訊
+.env
+*.local.yaml
+*.pem
+config.yaml
+
+# 臨時目錄
+tmp/
+logs/
+
+deployments/manifest

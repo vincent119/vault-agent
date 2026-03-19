@@ -1,0 +1,28 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: vault-agent-tls
+  namespace: vault-agent
+spec:
+  commonName: vault-agent
+  isCA: false
+  subject:
+    organizations:
+      - vault-agent
+  dnsNames:
+    - "vault-agent"
+    - "vault-agent.vault-agent.svc"
+    - "vault-agent.svc.cluster.local"
+    - "*.vault-agent.vault-agent.svc.cluster.local"
+    - "localhost"
+    - "127.0.0.1"
+  issuerRef:
+    kind: Issuer
+    name: vault-agent-issuer
+  privateKey:
+    algorithm: RSA
+    encoding: PKCS1
+    size: 2048
+  duration: 8760h
+  renewBefore: 360h
+  secretName: vault-agent-tls
