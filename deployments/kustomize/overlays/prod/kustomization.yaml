@@ -16,7 +16,7 @@ generatorOptions:
 images:
   - name: vault-agent
     newName: ghcr.io/vincent119/vault-agent
-    newTag: "latest"
+    newTag: "main"
 
 replicas:
   - count: 1
